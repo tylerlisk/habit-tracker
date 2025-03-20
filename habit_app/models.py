@@ -1,7 +1,7 @@
 from enum import Enum
 from .extensions import db
 from flask_login import UserMixin
-from sqlalchemy import Column, Integer, String, Boolean, Date, ForeignKey, Enum as SQLAlchemyEnum, func
+from sqlalchemy import Column, Integer, String, Text, Date, ForeignKey, Enum as SQLAlchemyEnum, func
 from sqlalchemy.orm import relationship
 
 class Categories(Enum):
@@ -36,3 +36,15 @@ class Habit(db.Model):
 
     def __repr__(self):
         return f"<Habit {self.name}, Category: {self.category.value}>"
+    
+class HabitLog(db.Model):
+    __tablename__ = "logs"
+
+    id = Column(Integer, primary_key=True)
+    habit_id = Column(Integer, ForeignKey("habits.id", ondelete="CASCADE"), nullable=False)
+    date = Column(Date, nullable=False)
+    comment = Column(Text, nullable=True)
+    image_url = Column(String(300), nullable=True)
+
+    habit = relationship("Habit", back_populates="logs")
+
