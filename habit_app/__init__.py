@@ -1,7 +1,7 @@
 from flask import Flask
 from .config import Config
 from .extensions import login_manager, db, bcrypt
-from . import auth, habit
+from . import auth, habit, models
 import os
 
 def create_app():
@@ -25,7 +25,6 @@ def create_app():
 
 
     with app.app_context():
-        from . import models
         db.create_all()
 
     return app
